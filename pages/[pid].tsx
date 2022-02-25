@@ -51,9 +51,9 @@ const Gallery: NextPage = () => {
     function Frame(props: FrameProps) {
         return (
             <div id="collectible" className="grid max-w-md content-center">
-                <div className="border-black border-4 drop-shadow-lg bg-white">
+                <a href={props.href} className="border-black border-4 drop-shadow-lg bg-white">
                     <img src={props.image} className="border border-black" />
-                </div>
+                </a>
                 <div id="details">
                     {props.title}
                 </div>
@@ -67,6 +67,12 @@ const Gallery: NextPage = () => {
         }
     }
 
+    function marketplaceUrl(collectible: Collectible) {
+        if (collectible.address && collectible.id) {
+            return `https://www.gem.xyz/asset/${collectible.address}/${collectible.id}`
+        }
+    }
+
     function Collectibles() {
         return safeCollectibles?.map((collectible) => {
             let mediaUrl = collectible.imageUri || collectible.metadata.image;
@@ -77,12 +83,13 @@ const Gallery: NextPage = () => {
 
             if (mediaUrl) {
                 let safeMediaUrl = safeUrl(mediaUrl);
+                let href = marketplaceUrl(collectible);
                 return (
                     <Frame
                         title={collectible.metadata.name || "xxx"}
                         text={collectible.metadata.description || ""}
                         image={safeMediaUrl || "#"}
-                        href={collectible.uri || "#"}
+                        href={href || "#"}
                     />
                 )
             }
