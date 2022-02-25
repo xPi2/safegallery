@@ -1,14 +1,14 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import SafeServiceClient, { SafeInfoResponse } from '@gnosis.pm/safe-service-client'
-import { useEffect, useState } from 'react';
 
 const Home: NextPage = () => {
+    const router = useRouter();
 
-    const handleKey = (e: SyntheticBaseEvent) => {
-        if(e.key === "Enter") {
-            console.log(e);
+    const handleKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === "Enter") {
+            event.preventDefault();
+            router.push(`/${event.currentTarget.value}`);
         }
     }
 
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
                     <p className="mt-5 text-lg">The gallery for Gnosis Safes decentralized collections</p>
                     <p className="my-2 text-lg">
                     Safe:
-                    <input onKeyDown={handleKey} className="appearance-none focus:outline-none bg-transparent border-b border-black"></input>
+                    <input onKeyDown={handleKey} className="md:w-[29rem] appearance-none focus:outline-none bg-transparent border-b border-black"></input>
                     </p>
                 </div>
             </main>
