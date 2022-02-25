@@ -1,5 +1,5 @@
 {
-  "name": "dgallery",
+  "name": "safegallery",
   "private": true,
   "scripts": {
     "dev": "next dev",

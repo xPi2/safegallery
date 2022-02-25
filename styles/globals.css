@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Space Mono', monospace, -apple-system, sans-serif;
   background-color: rgb(249 250 251);;
 }
 
@@ -14,6 +13,18 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+#collectible {
+    position: relative;
+}
+
+#collectible #details {
+    visibility: hidden;
+}
+
+#collectible:hover #details {
+    visibility: visible;
 }
 
 @tailwind base;
