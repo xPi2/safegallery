@@ -5,10 +5,11 @@ import { NFT } from '../../../abis';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import FramedImage from '../../../components/FramedImage';
+import { AbiItem } from 'web3-utils';
+import axios, { AxiosResponse } from 'axios';
 
 const Token: NextPage = () => {
     const router = useRouter();
-    const axios = require('axios');
     const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
     const galleryAddress: string = router.query.address ? router.query.address as string : "";
     const tokenAddress: string = router.query.token ? router.query.token as string : "";
@@ -29,20 +30,20 @@ const Token: NextPage = () => {
         if (!tokenAddress || !tokenId) {
             return
         }
-        let token = new web3.eth.Contract(NFT, tokenAddress);
+        let token = new web3.eth.Contract(NFT as AbiItem[], tokenAddress);
 
         let name = await token.methods.name().call();
         let tokenURI = await token.methods.tokenURI(tokenId).call();
         console.log(name);
         console.log(tokenURI);
-        axios.get(tokenURI).then(function(response) {
+        axios.get(tokenURI).then(function(response: AxiosResponse) {
             setCollectible(
                 {
                     address: tokenAddress,
                     id: tokenId,
                     name: response.data.name,
                     description: response.data.description,
-                    image: safeUrl(response.data.image)
+                    image: safeUrl(response.data.image) || ""
                 });
         })
     }
@@ -67,7 +68,7 @@ const Token: NextPage = () => {
         if (collectible) {
             return (
                 <div className="grid md:grid-cols-1 lg:grid-cols-2">
-                    <div>
+                    <div className="drop-shadow-lg">
                         <FramedImage src={collectible.image}/>
                     </div>
                     <div className="content-center">

@@ -93,12 +93,13 @@ const Gallery: NextPage = () => {
     }
 
     function Collectibles() {
-        return safeCollectibles?.map((collectible) => {
+        return safeCollectibles?.map((collectible, index) => {
             let safeMediaUrl = safeUrl(collectible.imageUri);
             // let href = marketplaceUrl(collectible);
             let href = `/${address}/${collectible.address}/${collectible.id}`;
             return (
                 <Frame
+                    key={index}
                     title={collectible.metadata.name || "xxx"}
                     text={collectible.metadata.description || ""}
                     image={safeMediaUrl || "#"}
