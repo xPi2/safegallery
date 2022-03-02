@@ -8,7 +8,7 @@ import Web3 from 'web3';
 const Gallery: NextPage = () => {
     const safeService = new SafeServiceClient('https://safe-transaction.gnosis.io');
     const router = useRouter();
-    let safeAddress: string = router.query.pid ? router.query.pid as string : "";
+    const address: string = router.query.address ? router.query.address as string : "";
     const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
     interface FrameProps {
@@ -58,16 +58,19 @@ const Gallery: NextPage = () => {
         }
     }
 
-    useEffect(() => {
-        if (safeAddress.endsWith('eth')) {
-            web3.eth.ens.getAddress(safeAddress).then((address) => {
-                safeAddress = address;
-                fetchSafeCollectibles(safeAddress);
-                });
+    const renderGallery = async (address: string | undefined) => {
+        if (address?.endsWith('eth')) {
+            web3.eth.ens.getAddress(address).then((resolver) => {
+                fetchSafeCollectibles(resolver);
+            });
         } else {
-            fetchSafeCollectibles(safeAddress);
+            fetchSafeCollectibles(address);
         }
-    }, [safeAddress]);
+    }
+
+    useEffect(() => {
+        renderGallery(address);
+    }, [address]);
 
     function Frame(props: FrameProps) {
         return (
@@ -88,16 +91,11 @@ const Gallery: NextPage = () => {
         }
     }
 
-    function marketplaceUrl(collectible: Collectible) {
-        if (collectible.address && collectible.id) {
-            return `https://www.gem.xyz/asset/${collectible.address}/${collectible.id}`
-        }
-    }
-
     function Collectibles() {
         return safeCollectibles?.map((collectible) => {
             let safeMediaUrl = safeUrl(collectible.imageUri);
-            let href = marketplaceUrl(collectible);
+            // let href = marketplaceUrl(collectible);
+            let href = `/${address}/${collectible.address}/${collectible.id}`;
             return (
                 <Frame
                     title={collectible.metadata.name || "xxx"}
@@ -111,7 +109,7 @@ const Gallery: NextPage = () => {
     }
 
     function Gallery() {
-        let minCols = safeCollectibles? Math.min(3, safeCollectibles.length) : 1;
+        let minCols = safeCollectibles ? Math.min(3, safeCollectibles.length) : 1;
         return (
             <div className={"place-items-center gap-10 lg:gap-6 px-10 z-10 grid md:grid-cols-1" + ` lg:grid-cols-${minCols}`}>
                 {Collectibles()}
