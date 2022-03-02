@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Web3 from 'web3';
-import { NFT } from '../../../abis.js';
+import { NFT } from '../../../abis';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
+import FramedImage from '../../../components/FramedImage';
 
 const Token: NextPage = () => {
     const router = useRouter();
@@ -67,7 +68,7 @@ const Token: NextPage = () => {
             return (
                 <div className="grid md:grid-cols-1 lg:grid-cols-2">
                     <div>
-                        <img src={collectible?.image} className="border-4 border-black" />
+                        <FramedImage src={collectible.image}/>
                     </div>
                     <div className="content-center">
                         <div className="p-5 bg-gray-50">

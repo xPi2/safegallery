@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import SafeServiceClient from '@gnosis.pm/safe-service-client'
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
+import FramedImage from '../components/FramedImage';
 
 const Gallery: NextPage = () => {
     const safeService = new SafeServiceClient('https://safe-transaction.gnosis.io');
@@ -75,8 +76,8 @@ const Gallery: NextPage = () => {
     function Frame(props: FrameProps) {
         return (
             <div id="collectible" className="grid max-w-md content-center">
-                <a href={props.href} className="border-black border-4 drop-shadow-lg bg-white">
-                    <img src={props.image} className="border border-black" />
+                <a href={props.href} className="drop-shadow-lg bg-white">
+                    <FramedImage src={props.image}/>
                 </a>
                 <div id="details">
                     {props.title}
